@@ -1,8 +1,10 @@
 package com.veylik.notes.domain
 
-class SwitchPinnedStatusUseCase {
+class SwitchPinnedStatusUseCase(
+    private val repository: NotesRepository
+) {
 
-    operator fun invoke(noteId: Note) {
-        TODO()
+    operator fun invoke(noteId: Int) {
+        repository.switchPinnedStatus(noteId)
     }
 }
