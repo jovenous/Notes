@@ -1,4 +1,4 @@
-package com.veylik.notes.ui.theme
+package com.veylik.notes.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
