@@ -12,7 +12,7 @@ class AddNoteUseCase(
             title = title,
             content = content,
             isPinned = false,
-            updatedAt = System.currentTimeMillis(),
+            updatedAt = System.currentTimeMillis()
         )
     }
 }

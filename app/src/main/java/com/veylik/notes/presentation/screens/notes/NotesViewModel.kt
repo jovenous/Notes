@@ -5,16 +5,10 @@ package com.veylik.notes.presentation.screens.notes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.veylik.notes.data.TestNotesRepositoryImpl
-import com.veylik.notes.domain.AddNoteUseCase
-import com.veylik.notes.domain.DeleteNoteUseCase
-import com.veylik.notes.domain.EditNoteUseCase
 import com.veylik.notes.domain.GetAllNotesUseCase
-import com.veylik.notes.domain.GetNoteUseCase
 import com.veylik.notes.domain.Note
 import com.veylik.notes.domain.SearchNoteUseCase
 import com.veylik.notes.domain.SwitchPinnedStatusUseCase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,11 +22,7 @@ class NotesViewModel : ViewModel() {
 
     private val repository = TestNotesRepositoryImpl
 
-    private val addNoteUseCase = AddNoteUseCase(repository)
-    private val editNoteUseCase = EditNoteUseCase(repository)
-    private val deleteNoteUseCase = DeleteNoteUseCase(repository)
     private val getAllNotesUseCase = GetAllNotesUseCase(repository)
-    private val getNoteUseCase = GetNoteUseCase(repository)
     private val searchNoteUseCase = SearchNoteUseCase(repository)
     private val switchPinnedStatusUseCase = SwitchPinnedStatusUseCase(repository)
 
@@ -42,9 +32,6 @@ class NotesViewModel : ViewModel() {
     val state = _state.asStateFlow()
 
     init {
-
-        addSomeNotes()
-
         query
             .onEach { input ->
                 _state.update { it.copy(query = input) }
@@ -64,32 +51,9 @@ class NotesViewModel : ViewModel() {
             .launchIn(viewModelScope)
     }
 
-    // TODO: don't forget to remove it
-    private fun addSomeNotes() {
-        viewModelScope.launch {
-            repeat(10_000) {
-                addNoteUseCase(
-                    title = "Title №$it Title №$it  Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it",
-                    content = "Content №$it  Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it"
-                )
-            }
-        }
-    }
-
     fun processCommand(command: NotesCommand) {
         viewModelScope.launch {
             when (command) {
-                is NotesCommand.DeleteNote -> {
-                    deleteNoteUseCase(command.noteId)
-                }
-
-                is NotesCommand.EditNote -> {
-                    val note = getNoteUseCase(command.note.id)
-
-                    val title = note.title
-                    editNoteUseCase(note.copy(title = "$title edited"))
-                }
-
                 is NotesCommand.InputSearchQuery -> {
                     query.update { command.query.trim() }
                 }
@@ -106,11 +70,6 @@ sealed interface NotesCommand {
 
     data class InputSearchQuery(val query: String) : NotesCommand
     data class SwitchPinnedStatus(val noteId: Int) : NotesCommand
-
-    // Temp
-
-    data class DeleteNote(val noteId: Int) : NotesCommand
-    data class EditNote(val note: Note) : NotesCommand
 }
 
 data class NotesScreenState(
