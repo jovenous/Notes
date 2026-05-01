@@ -22,7 +22,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NotesTheme {
-                CreateNoteScreen()
+                CreateNoteScreen(
+                    onFinished = {
+                        Log.d("CreateNoteScreen", "Finished")
+                    }
+                )
 //                NotesScreen(
 //                    onNoteClick = {
 //                        Log.d("MainActivity", "onNoteClick $it")

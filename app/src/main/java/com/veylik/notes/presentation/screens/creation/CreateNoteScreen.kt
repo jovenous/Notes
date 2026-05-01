@@ -21,6 +21,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,13 +36,12 @@ import com.veylik.notes.presentation.utils.DateFormatter
 fun CreateNoteScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateNoteViewModel = viewModel(),
+    onFinished: () -> Unit,
 
     ) {
 
     val state = viewModel.state.collectAsState()
-    val currentState = state.value
-
-    when (currentState) {
+    when (val currentState = state.value) {
         is CreateNoteState.Creation -> {
             Scaffold(
                 modifier = modifier,
@@ -168,7 +168,9 @@ fun CreateNoteScreen(
         }
 
         CreateNoteState.Finished -> {
-
+            LaunchedEffect(key1 = Unit) {
+                onFinished()
+            }
         }
     }
 
