@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.veylik.notes.presentation.screens.creation.CreateNoteScreen
 import com.veylik.notes.presentation.screens.notes.NotesScreen
 import com.veylik.notes.presentation.ui.theme.NotesTheme
 
@@ -21,20 +22,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NotesTheme {
-                NotesScreen(
-                    onNoteClick = {
-                        Log.d("MainActivity", "onNoteClick $it")
-                    },
-                    onAddNoteClick = {
-                        Log.d("MainActivity", "onAddNoteClick")
-                    }
-                )
+                CreateNoteScreen()
+//                NotesScreen(
+//                    onNoteClick = {
+//                        Log.d("MainActivity", "onNoteClick $it")
+//                    },
+//                    onAddNoteClick = {
+//                        Log.d("MainActivity", "onAddNoteClick")
+//                    }
+//                )
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("MainActivity", "OnDestroy")
     }
 }
