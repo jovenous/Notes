@@ -40,6 +40,7 @@ import com.veylik.notes.R
 import com.veylik.notes.domain.Note
 import com.veylik.notes.presentation.ui.theme.OtherNotesColors
 import com.veylik.notes.presentation.ui.theme.PinnedNotesColors
+import com.veylik.notes.presentation.utils.DateFormatter
 
 @Composable
 fun NotesScreen(
@@ -255,7 +256,7 @@ fun NoteCard(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = note.updatedAt.toString(),
+            text = DateFormatter.formatDateToString(note.updatedAt),
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
