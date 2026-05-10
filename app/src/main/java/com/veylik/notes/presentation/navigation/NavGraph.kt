@@ -1,11 +1,9 @@
 package com.veylik.notes.presentation.navigation
 
+import android.os.Bundle
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.internal.composableLambda
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.navigation.NavGraph
-import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -24,7 +22,7 @@ fun NavGraph() {
         composable(Screen.Notes.route) {
             NotesScreen(
                 onNoteClick = {
-                    navController.navigate(Screen.EditNote.route)
+                    navController.navigate(Screen.EditNote.createRoute(it.id))
                 },
                 onAddNoteClick = {
                     navController.navigate(Screen.CreateNote.route)
@@ -39,8 +37,10 @@ fun NavGraph() {
             )
         }
         composable(Screen.EditNote.route) {
+            val noteId = Screen.EditNote.getNoteId(it.arguments)
+
             EditNoteScreen(
-                noteId = 5,
+                noteId = noteId,
                 onFinished = {
                     navController.popBackStack()
                 }
@@ -86,9 +86,21 @@ fun CustomNavGraph() {
 }
 
 sealed class Screen(val route: String) {
+
     data object Notes : Screen("notes")
+
     data object CreateNote : Screen("create_note")
-    data object EditNote : Screen("edit_note")
+
+    data object EditNote : Screen("edit_note/{note_id}") {
+
+        fun createRoute(noteId: Int): String {
+            return "edit_note/$noteId"
+        }
+
+        fun getNoteId(arguments: Bundle?): Int {
+            return arguments?.getString("note_id")?.toInt() ?: 0
+        }
+    }
 }
 
 sealed interface CustomScreen {
