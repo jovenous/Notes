@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.veylik.notes.domain.Note
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -11,6 +12,9 @@ interface NotesDao {
 
     @Query("SELECT * FROM notes ORDER BY updatedAt DESC")
     fun getAllNotes(): Flow<List<NoteDbModel>>
+
+    @Query("SELECT * FROM notes WHERE id == :noteId")
+    suspend fun getNote(noteId: Int): NoteDbModel
 
     @Query("SELECT * FROM notes WHERE title LIKE '%' || :query || '%' OR " +
             " content LIKE '%' || :query || '%' ORDER BY updatedAt DESC")
