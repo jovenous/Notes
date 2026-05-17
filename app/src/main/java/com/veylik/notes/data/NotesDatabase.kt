@@ -30,7 +30,7 @@ abstract class NotesDatabase : RoomDatabase() {
                 return Room.databaseBuilder(
                     context = context,
                     klass = NotesDatabase::class.java,
-                    name = "notes.db"
+                    name = "notes_practice.db"
                 ).build().also {
                     instance = it
                 }
