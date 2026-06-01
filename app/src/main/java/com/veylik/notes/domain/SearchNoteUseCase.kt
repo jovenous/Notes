@@ -1,8 +1,9 @@
 package com.veylik.notes.domain
 
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class SearchNoteUseCase(
+class SearchNoteUseCase @Inject constructor(
     private val repository: NotesRepository
 ) {
 
