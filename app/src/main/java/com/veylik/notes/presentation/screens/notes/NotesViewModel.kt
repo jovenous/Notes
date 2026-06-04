@@ -2,11 +2,8 @@
 
 package com.veylik.notes.presentation.screens.notes
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.veylik.notes.data.NotesRepositoryImpl
-import com.veylik.notes.data.TestNotesRepositoryImpl
 import com.veylik.notes.domain.GetAllNotesUseCase
 import com.veylik.notes.domain.Note
 import com.veylik.notes.domain.SearchNoteUseCase
