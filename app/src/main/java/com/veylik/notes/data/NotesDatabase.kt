@@ -14,26 +14,4 @@ abstract class NotesDatabase : RoomDatabase() {
 
     abstract fun notesDao(): NotesDao
 
-    companion object {
-
-        private var instance: NotesDatabase? = null
-        private val LOCK = Any()
-
-        fun getInstance(context: Context): NotesDatabase {
-
-            instance?.let { return it }
-
-            synchronized(LOCK) {
-                instance?.let { return it }
-
-                return Room.databaseBuilder(
-                    context = context,
-                    klass = NotesDatabase::class.java,
-                    name = "notes.db"
-                ).fallbackToDestructiveMigration(dropAllTables = true).build().also {
-                    instance = it
-                }
-            }
-        }
-    }
 }
