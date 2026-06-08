@@ -1,6 +1,7 @@
 package com.veylik.notes.di
 
 import android.content.Context
+import androidx.room.Room
 import com.veylik.notes.data.NotesDao
 import com.veylik.notes.data.NotesDatabase
 import com.veylik.notes.data.NotesRepositoryImpl
@@ -30,7 +31,11 @@ interface DataModule {
         fun provideNotesDatabase(
             @ApplicationContext context: Context
         ): NotesDatabase {
-            return NotesDatabase.getInstance(context)
+            return Room.databaseBuilder(
+                context = context,
+                klass = NotesDatabase::class.java,
+                name = "notes_practice.db"
+            ).build()
         }
 
         @Singleton
