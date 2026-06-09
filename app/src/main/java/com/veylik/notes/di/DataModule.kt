@@ -35,7 +35,7 @@ interface DataModule {
                 context = context,
                 klass = NotesDatabase::class.java,
                 name = "notes_practice.db"
-            ).build()
+            ).fallbackToDestructiveMigration(dropAllTables = true).build()
         }
 
         @Singleton
