@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.veylik.notes.domain.AddNoteUseCase
 import com.veylik.notes.domain.ContentItem
-import com.veylik.notes.domain.ContentItem.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -87,8 +86,8 @@ class CreateNoteViewModel @Inject constructor(
                             if (lastItem is ContentItem.Text && lastItem.content.isBlank()) {
                                 removeAt(lastIndex)
                             }
-                            add(Image(command.uri.toString()))
-                            add(Text(""))
+                            add(ContentItem.Image(command.uri.toString()))
+                            add(ContentItem.Text(""))
                         }.let {
                             previousState.copy(content = it)
                         }

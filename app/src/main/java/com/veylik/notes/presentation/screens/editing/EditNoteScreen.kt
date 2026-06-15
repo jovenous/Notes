@@ -2,6 +2,9 @@
 
 package com.veylik.notes.presentation.screens.editing
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,6 +36,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.veylik.notes.domain.ContentItem
 import com.veylik.notes.presentation.screens.editing.EditNoteCommand.InputTitle
+import com.veylik.notes.presentation.ui.theme.Content
+import com.veylik.notes.presentation.ui.theme.CustomIcons
 import com.veylik.notes.presentation.utils.DateFormatter
 
 @Composable
@@ -49,6 +54,16 @@ fun EditNoteScreen(
     ) {
 
     val state = viewModel.state.collectAsState()
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            uri?.let {
+                viewModel.processCommand(EditNoteCommand.AddImage(uri = it))
+            }
+        }
+    )
+
     when (val currentState = state.value) {
         is EditNoteState.Editing -> {
             Scaffold(
@@ -71,7 +86,17 @@ fun EditNoteScreen(
                         actions = {
                             Icon(
                                 modifier = Modifier
-                                    .padding(end = 16.dp)
+                                    .clickable {
+                                        imagePicker.launch("image/*")
+                                    }
+                                    .padding(end = 16.dp),
+                                imageVector = CustomIcons.AddPhoto,
+                                contentDescription = "Add photo from gallery",
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                            Icon(
+                                modifier = Modifier
+                                    .padding(end = 24.dp)
                                     .clickable {
                                         viewModel.processCommand(EditNoteCommand.Delete)
                                     },
@@ -132,16 +157,22 @@ fun EditNoteScreen(
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    currentState.note.content.filterIsInstance<ContentItem.Text>()
-                        .forEach { contentItem ->
-                            TextContent(
-                                modifier = Modifier.weight(1f),
-                                text = contentItem.content,
-                                onTextChanged = {
-                                    viewModel.processCommand(EditNoteCommand.InputContent(it))
-                                }
+                    Content(
+                        modifier = Modifier.weight(1f),
+                        content = currentState.note.content,
+                        onDeleteImageClick = {
+                            viewModel.processCommand(EditNoteCommand.DeleteImage(it))
+                        },
+                        onTextChanged = { index, text ->
+                            viewModel.processCommand(
+                                EditNoteCommand.InputContent(
+                                    content = text,
+                                    index = index
+                                )
                             )
+
                         }
+                    )
                     Button(
                         modifier = Modifier
                             .padding(horizontal = 24.dp)
@@ -177,36 +208,4 @@ fun EditNoteScreen(
         EditNoteState.Initial -> {}
     }
 
-}
-
-@Composable
-private fun TextContent(
-    modifier: Modifier = Modifier,
-    text: String,
-    onTextChanged: (String) -> Unit
-) {
-    TextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        value = text,
-        onValueChange = onTextChanged,
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
-        ),
-        textStyle = TextStyle(
-            fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onSurface
-        ),
-        placeholder = {
-            Text(
-                text = "Note something down",
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = (0.2f))
-            )
-        }
-    )
 }
