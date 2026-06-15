@@ -149,11 +149,12 @@ fun CreateNoteScreen(
                     )
                     Content(
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 24.dp),
+                            .weight(1f),
                         content = currentState.content,
                         onDeleteImageClick = {
-
+                            viewModel.processCommand(
+                                CreateNoteCommand.DeleteImage(it)
+                            )
                         },
                         onTextChanged = { index, text ->
                             viewModel.processCommand(
@@ -221,10 +222,10 @@ private fun Content(
                             ?.map { (it as ContentItem.Image).url }
                             ?.let { urls ->
                                 ImageGroup(
+                                    modifier = Modifier.padding(horizontal = 24.dp),
                                     imageUrls = urls,
-                                    onDeleteImageClick = { index ->
-
-
+                                    onDeleteImageClick = { imageIndex ->
+                                        onDeleteImageClick(index + imageIndex)
                                     }
                                 )
 
