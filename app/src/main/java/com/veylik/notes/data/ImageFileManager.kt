@@ -18,7 +18,6 @@ class ImageFileManager @Inject constructor(
     suspend fun copyImageToInternalStorage(url: String): String {
         val fileName = "IMG_${UUID.randomUUID()}.jpg"
         val file = File(imagesDir, fileName)
-
         withContext(Dispatchers.IO) {
             context.contentResolver.openInputStream(url.toUri())?.use { inputStream ->
                 file.outputStream().use { outputStream ->
@@ -37,7 +36,6 @@ class ImageFileManager @Inject constructor(
                 file.delete()
             }
         }
-
     }
 
     fun isInternal(url: String): Boolean {
