@@ -93,8 +93,6 @@ class CreateNoteViewModel @Inject constructor(
                         }.let {
                             previousState.copy(content = it)
                         }
-
-
                     } else {
                         previousState
                     }
