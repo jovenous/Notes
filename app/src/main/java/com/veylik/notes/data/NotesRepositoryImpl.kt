@@ -1,6 +1,5 @@
 package com.veylik.notes.data
 
-import android.content.Context
 import com.veylik.notes.domain.ContentItem
 import com.veylik.notes.domain.Note
 import com.veylik.notes.domain.NotesRepository
@@ -20,7 +19,7 @@ class NotesRepositoryImpl @Inject constructor(
         isPinned: Boolean,
         updatedAt: Long
     ) {
-        val note = Note(0, title, content.proccesForStorage(), updatedAt, isPinned)
+        val note = Note(0, title, content.processForStorage(), updatedAt, isPinned)
         val noteDbModel = note.toDbModel()
         notesDao.addNote(noteDbModel)
     }
@@ -50,7 +49,7 @@ class NotesRepositoryImpl @Inject constructor(
             imageFileManager.deleteImage(it)
         }
 
-        val processedContent = note.content.proccesForStorage()
+        val processedContent = note.content.processForStorage()
         val processedNote = note.copy(content = processedContent)
 
         notesDao.addNote(processedNote.toDbModel())
@@ -72,7 +71,7 @@ class NotesRepositoryImpl @Inject constructor(
         notesDao.switchPinnedStatus(noteId)
     }
 
-    private suspend fun List<ContentItem>.proccesForStorage(): List<ContentItem> {
+    private suspend fun List<ContentItem>.processForStorage(): List<ContentItem> {
         return map { contentItem ->
             when (contentItem) {
                 is ContentItem.Image -> {
