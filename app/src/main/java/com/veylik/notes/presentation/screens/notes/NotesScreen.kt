@@ -35,10 +35,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -85,7 +87,7 @@ fun NotesScreen(
             item {
                 Title(
                     modifier = Modifier.padding(horizontal = 24.dp),
-                    text = "All Notes"
+                    text = stringResource(R.string.all_notes)
                 )
             }
             item {
@@ -106,7 +108,7 @@ fun NotesScreen(
             item {
                 Subtitle(
                     modifier = Modifier.padding(horizontal = 24.dp),
-                    text = "Pinned"
+                    text = stringResource(R.string.pinned)
                 )
             }
             item {
@@ -140,7 +142,7 @@ fun NotesScreen(
             item {
                 Subtitle(
                     modifier = Modifier.padding(horizontal = 24.dp),
-                    text = "Others"
+                    text = stringResource(R.string.others)
                 )
             }
             item {
@@ -220,7 +222,7 @@ private fun SearchBar(
         onValueChange = onQueryChange,
         placeholder = {
             Text(
-                text = "Search...",
+                text = stringResource(R.string.search),
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -277,6 +279,15 @@ fun NoteCardWithImage(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(
+                        brush = Brush.verticalGradient(
+                            listOf(
+                                Color.Transparent,
+                                MaterialTheme.colorScheme.onSurface
+                            )
+                        )
+                    )
                     .padding(16.dp)
                     .align(Alignment.BottomStart)
             ) {
