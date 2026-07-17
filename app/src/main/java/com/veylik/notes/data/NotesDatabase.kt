@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 
 @Database(
-    entities = [NoteDbModel::class],
-    version = 2,
+    entities = [NoteDbModel::class, ContentItemDbModel::class],
+    version = 3,
     exportSchema = false
 )
 abstract class NotesDatabase : RoomDatabase() {
