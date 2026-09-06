@@ -49,41 +49,41 @@ fun NavGraph() {
     }
 }
 
-@Composable
-fun CustomNavGraph() {
-    val screen = remember {
-        mutableStateOf<CustomScreen>(CustomScreen.Notes)
-    }
-    when (val currentScreen = screen.value) {
-        CustomScreen.CreateNote -> {
-            CreateNoteScreen(
-                onFinished = {
-                    screen.value = CustomScreen.Notes
-                }
-            )
-        }
-
-        is CustomScreen.EditNote -> {
-            EditNoteScreen(
-                noteId = currentScreen.noteId,
-                onFinished = {
-                    screen.value = CustomScreen.Notes
-                }
-            )
-        }
-
-        CustomScreen.Notes -> {
-            NotesScreen(
-                onNoteClick = {
-                    screen.value = CustomScreen.EditNote(it.id)
-                },
-                onAddNoteClick = {
-                    screen.value = CustomScreen.CreateNote
-                }
-            )
-        }
-    }
-}
+//@Composable
+//fun CustomNavGraph() {
+//    val screen = remember {
+//        mutableStateOf<CustomScreen>(CustomScreen.Notes)
+//    }
+//    when (val currentScreen = screen.value) {
+//        CustomScreen.CreateNote -> {
+//            CreateNoteScreen(
+//                onFinished = {
+//                    screen.value = CustomScreen.Notes
+//                }
+//            )
+//        }
+//
+//        is CustomScreen.EditNote -> {
+//            EditNoteScreen(
+//                noteId = currentScreen.noteId,
+//                onFinished = {
+//                    screen.value = CustomScreen.Notes
+//                }
+//            )
+//        }
+//
+//        CustomScreen.Notes -> {
+//            NotesScreen(
+//                onNoteClick = {
+//                    screen.value = CustomScreen.EditNote(it.id)
+//                },
+//                onAddNoteClick = {
+//                    screen.value = CustomScreen.CreateNote
+//                }
+//            )
+//        }
+//    }
+//}
 
 sealed class Screen(val route: String) {
 
@@ -103,8 +103,8 @@ sealed class Screen(val route: String) {
     }
 }
 
-sealed interface CustomScreen {
-    data object Notes : CustomScreen
-    data object CreateNote : CustomScreen
-    data class EditNote(val noteId: Int) : CustomScreen
-}
+//sealed interface CustomScreen {
+//    data object Notes : CustomScreen
+//    data object CreateNote : CustomScreen
+//    data class EditNote(val noteId: Int) : CustomScreen
+//}
